@@ -1,0 +1,63 @@
+# You have a database application and an application that depends on it.
+
+# Requirements:
+# - Create a Deployment named database-app.
+# - Database Pods must have the label role=database.
+# - Create another Deployment named client-app.
+# - Client Pods must be scheduled on the same node as a Pod with role=database.
+# - Use requiredDuringSchedulingIgnoredDuringExecution.
+# - Use topologyKey: kubernetes.io/hostname.
+ 
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: database-app
+spec: 
+  replicas: 1
+  selector:  
+    matchLabels:
+      role: database
+  template:
+    metadata: 
+      labels: 
+        role: database
+    spec: 
+      containers:
+        - name: nginx
+          image: nginx:1.27
+          ports: 
+            - containerPort: 80
+        
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-app
+spec: 
+  replicas: 2
+  selector: 
+    matchLabels: 
+      app: client-app
+  template: 
+    metadata: 
+      labels:
+        app: client-app
+    spec: 
+      affinity:
+        podAffinity: 
+          requiredDuringSchedulingIgnoredDuringExecution: 
+            - labelSelector: 
+                matchExpressions:
+                  - key: role
+                    operator: In 
+                    values: 
+                      - database
+              topologyKey: kubernetes.io/hostname
+      
+      containers: 
+        - name: nginx
+          image: nginx:1.27
+          ports: 
+            - containerPort: 80
+    
+    

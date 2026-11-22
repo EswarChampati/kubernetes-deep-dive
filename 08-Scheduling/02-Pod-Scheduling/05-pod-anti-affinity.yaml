@@ -1,0 +1,39 @@
+# You are deploying a highly available web application.
+
+# Requirements:
+# - Create a Deployment named high-availability-app.
+# - 3 replicas.
+# - Use podAntiAffinity.
+# - Prevent two Pods with label app=high-availability-app from running on the same node.
+# - Use requiredDuringSchedulingIgnoredDuringExecution.
+# - Use topologyKey: kubernetes.io/hostname.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: high-availability-app
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels:
+      app: high-availability-app
+  template: 
+    metadata: 
+      labels: 
+        app: high-availability-app
+    spec:
+      affinity: 
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions: 
+                  - key: app
+                    operator: In 
+                    values: 
+                      - high-availability-app
+              topologyKey: kubernetes.io/hostname
+      containers: 
+        - name: nginx
+          image: nginx:1.27
+          ports: 
+            - containerPort: 8

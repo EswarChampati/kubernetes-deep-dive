@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: employee-config
+data:
+  application.properties: |
+    server.port=8080
+    spring.application.name=employee-service
+    spring.profiles.active=dev
+    database.host=mysql-service
+    database.port=3306
+# we can have multiple properties ech wll be mapped as the seperate file in the volume mount

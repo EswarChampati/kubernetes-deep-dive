@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: pod-with-two-containers
+  labels:
+    environment: Testing
+  annotations:
+    description: "This pod has two containers where one is init container"
+spec:
+  initContainers:
+    - name: init-container
+      image: busybox
+      command: ['sh', '-c', 'echo Initializing...']
+  containers:
+    - name: main-container
+      image: nginx
+      ports:
+        - containerPort: 80

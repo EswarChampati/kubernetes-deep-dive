@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: readiness-demo
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels: 
+      app: readiness-demo
+  template: 
+    metadata: 
+      labels: 
+        app: readiness-demo
+    spec: 
+      containers: 
+        - name: nginx
+          image: nginx:1.27
+          ports: 
+            - containerPort: 80
+          readinessProbe: 
+            httpGet: 
+              path: /invalid123     # change the path and check the new pods which are created because of replicaset cause 
+                                    # it will gradually scale down the old ppds and create the new pods right but new pods 
+                                    # are not getting created so old pods will be used as it is.
+# we can even check the pod is getting ready or not via kubectl get pods and extra pod is created becase default max-surge is 25%
+              port: 80
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 2
+
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: readiness-service
+spec: 
+  type: ClusterIP
+  selector: 
+    app: readiness-demo
+  ports: 
+    - port: 80
+      targetPort: 80

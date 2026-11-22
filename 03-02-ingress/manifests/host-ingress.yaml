@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: 
+  name: host-ingress
+spec: 
+  ingressClassName: traefik
+  rules:
+    - host: shop.local
+      http:   #http specifies that the rule handles HTTP traffic.
+        paths: 
+          - path: /
+            pathType: Prefix
+            backend: 
+              service:
+                name:  shop-service
+                port:
+                  number: 80
+    - host: api.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 80
+              

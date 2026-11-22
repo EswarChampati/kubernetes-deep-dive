@@ -1,0 +1,20 @@
+**/*.md
+**/*.MD
+
+# Allow only root README
+!/README.md
+
+# Environment files
+**/.env
+**/.env.*
+!**/.env.example
+
+# Credentials and configuration
+**/credentials
+**/credentials.*
+**/secrets.*
+**/*secret*.yaml
+**/*secret*.yml
+**/*secret*.json
+**/kubeconfig
+**/*kubeconfig*

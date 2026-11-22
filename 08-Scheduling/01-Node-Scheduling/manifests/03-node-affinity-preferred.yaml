@@ -1,0 +1,37 @@
+# Create a Deployment named preferred-app with 3 replicas.
+
+# Requirements:
+# - Prefer nodes labelled disk=ssd.
+# - Give the preference a weight of 80.
+# - If no SSD node is available, allow Kubernetes to schedule on another eligible nod
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: preferred-app
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels: 
+      app: preferred-app
+  template:
+    metadata:
+      labels: 
+        app: preferred-app
+    spec: 
+      affinity: 
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution: 
+            - weight: 80
+              preference:
+                matchExpressions:
+                  - key: disk
+                    operator: In
+                    values: 
+                      - ssd
+      
+      containers: 
+        - name: nginx
+          image: nginx:1.27
+          ports: 
+            - containerPort: 80

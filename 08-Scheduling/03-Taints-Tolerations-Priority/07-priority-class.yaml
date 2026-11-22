@@ -1,0 +1,9 @@
+Your cluster runs two applications:
+    - A low-priority background application.
+    - A high-priority critical application.
+Requirements:
+    - Create a PriorityClass named low-priority with value 100.
+    - Create another PriorityClass named high-priority with value 100000.
+    - Create one Deployment for each.
+    - Assign the corresponding PriorityClass to each Deployment.
+    - Understand how priority influences scheduling and preemption.

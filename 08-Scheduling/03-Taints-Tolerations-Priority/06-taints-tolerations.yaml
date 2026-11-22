@@ -1,0 +1,37 @@
+# You have a worker node dedicated to database workloads.
+
+# Requirements:
+# - Add a taint to the node: dedicated=database:NoSchedule.
+# - Create a Deployment named database-workload.
+# - 2 replicas.
+# - Configure tolerations to allow the Pods onto that node.
+# - Use a node selector so the Pods specifically target that node.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: database-workload
+spec: 
+  replicas: 2
+  selector: 
+    matchLabels: 
+      app: database-workload
+  template:
+    metadata: 
+      labels: 
+        app: database-workload
+    spec: 
+      nodeSelector: 
+        dedicated: database
+      tolerations: 
+        - key: dedicated
+          operator: Equal
+          value: database
+          effect: NoSchedule
+
+      containers: 
+        - name: nginx
+          image: nginx:1.27
+          ports: 
+            - containerPort: 80
+      

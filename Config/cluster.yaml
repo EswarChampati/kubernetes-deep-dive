@@ -1,0 +1,24 @@
+kind: Cluster    # Declares a kind cluster configuration
+apiVersion: kind.x-k8s.io/v1alpha4   # Identifies the kind configuration schema version
+name: k8s-lab    # Specifies the name of the kind cluster
+nodes:    # Defines the nodes that will be part of the kind cluster
+  - role: control-plane    # Creates a node with control-plane components
+    extraPortMappings:
+      # - containerPort: 80  # which port inside the kind node container should receive forwarded traffic. kind control-plane node container will listen on this port
+      #   hostPort: 80       # which port on the host should receive that traffic
+      #   listenAddress: "127.0.0.1"   # which address on the host should listen for the forwarded traffic
+
+      # - containerPort: 443  # which port inside the kind node container should receive forwarded traffic.
+      #   hostPort: 443       # which port on the host should receive that traffic
+      #   listenAddress: "127.0.0.1"   # which address on the host should listen for the forwarded traffic
+        
+      - containerPort: 30080
+        hostPort: 80
+        listenAddress: "127.0.0.1"
+        protocol: TCP
+      - containerPort: 30443
+        hostPort: 443
+        listenAddress: "127.0.0.1"
+        protocol: TCP
+  - role: worker    # Creates a worker node
+  - role: worker    # Creates another worker node

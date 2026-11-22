@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: 
+  name: my-ingress
+spec: 
+  ingressClassName: traefik
+  rules:
+    - host: myapp.local
+      http:
+        paths: 
+          - path: /api/login
+            pathType: Exact
+            backend: 
+              service: 
+                name: api-service
+                port: 
+                  number: 80
+
+
+# Client: GET /api/login -> HTTP request -> Traefik Ingress: Checks Host and Path -> Rule matched -> Kubernetes Service:api-service:80 ->
+# Selects a backend Pod: Nginx Pod ->  Receives /api/login -> Nginx Pod: Checks for /api/login -> No matching location found -> Returns 404 Not Found
+# nginx expect the path to be / always to render

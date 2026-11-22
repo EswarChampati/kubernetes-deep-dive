@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Namespace
+metadata: 
+  name: testing
+
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata: 
+  name: testing-quota
+  namespace: testing
+spec: 
+  hard: 
+    pods: "3"
+    requests.cpu: "1"
+    requests.memory: "1Gi"
+    limits.cpu: "2"
+    limits.memory: "2Gi"
+
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: quota-demo
+  namespace: testing
+spec: 
+  replicas: 3     # when we changed from the 2 to 3 then new pod wont be created because limits are already reached so in the replica set controller can see the logs that
+  selector: 
+    matchLabels: 
+      app: quota-demo
+  template: 
+    metadata: 
+      labels: 
+        app: quota-demo
+    spec: 
+      containers: 
+        - name: nginx
+          image: nginx:1.27
+          ports: 
+            - containerPort: 80
+          resources: 
+            requests: 
+              cpu: 500m
+              memory: "512Mi" 
+            limits: 
+              cpu: "1"
+              memory: "1Gi"
+  

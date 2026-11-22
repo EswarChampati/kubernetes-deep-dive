@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod    # Declares a Pod resource in Kubernetes
+metadata:    # Provides metadata about the Pod
+  name: basic-pod    # Specifies the name of the Pod
+spec:    # Defines the desired state of the Pod
+  containers:    # Lists the containers that will run in the Pod
+    - name: nginx-container    # Names the container
+      image: nginx    # Specifies the container image to use

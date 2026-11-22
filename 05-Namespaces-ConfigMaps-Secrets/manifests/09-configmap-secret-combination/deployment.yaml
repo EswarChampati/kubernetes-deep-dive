@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: employee-app
+spec: 
+  replicas: 2
+  selector: 
+    matchLabels:
+      app: employee
+  template: 
+    metadata:
+      labels:
+        app: employee
+    spec: 
+      containers:
+        - name: nginx
+          image: nginx:1.27
+          envFrom: 
+            - configMapRef:
+                name: production-config
+            - secretRef:
+                name: production-secret

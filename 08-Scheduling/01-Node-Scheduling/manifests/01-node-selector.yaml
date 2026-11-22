@@ -1,0 +1,29 @@
+# You have a three-node Kubernetes cluster. You want to schedule an NGINX Pod only on a worker node labelled workload=frontend.
+
+# Requirements:
+# - Create a Deployment named frontend-app.
+# - 2 replicas.
+# - Use NGINX.
+# - Schedule Pods only on nodes with workload=frontend.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: frontend-app
+spec: 
+  replicas: 2
+  selector:
+    matchLabels: 
+      app: frontend-app
+  template:
+    metadata: 
+      labels: 
+        app: frontend-app
+    spec: 
+      nodeSelector:
+        workload: frontend
+      containers:
+        - name: nginx
+          image: nginx:1.27
+          ports:
+            - containerPort: 80

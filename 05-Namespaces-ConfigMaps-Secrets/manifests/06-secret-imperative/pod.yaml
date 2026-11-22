@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: secret-pod
+spec: 
+  containers:
+    - name: nginx
+      image: nginx:1.27
+      env: 
+        - name: ENV_DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: DB_USERNAME
+              name: database-secret
+        
+        - name: ENV_DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: DB_PASSWORD
+              name: database-secret

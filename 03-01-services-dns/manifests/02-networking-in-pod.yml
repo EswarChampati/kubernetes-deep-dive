@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl-nginx-pod
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      ports:
+      - containerPort: 80
+    - name: curl-container
+      image: curlimages/curl
+      command: ["sleep", "3600"]
+
+
+#This files helps to demonstrate networking between containers within the same pod using the curl into the nginx container via 
+#  kubectl exec -it curl-nginx-pod -c curl-container -- sh 
+# ~ $ curl http://localhost

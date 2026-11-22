@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: parallel-job 
+spec: 
+  completions: 6
+  parallelism: 2
+  template: 
+    spec: 
+      containers:
+        - name: worker
+          image: busybox:1.36
+          command: 
+            - /bin/sh
+            - -c 
+            - | 
+                echo "Processing task"
+                sleep 15
+                echo "Task completed"
+      restartPolicy: Never
+
+# restartPolicy: Never in a Kubernetes Job because we want the Job controller to manage failed executions by 
+# creating new Pods rather than restarting the failed container inside the same Pod.

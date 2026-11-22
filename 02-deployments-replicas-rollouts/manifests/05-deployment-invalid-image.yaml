@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rollout-invalid-image
+spec:
+   replicas: 3
+   selector: 
+     matchLabels:
+       app: rollout-invalid
+   template: 
+     metadata: 
+       labels:
+        app: rollout-invalid
+     spec:
+       containers:
+         - name: invalid-image-nginx
+           image: nginx:1.28
+           ports:
+           - containerPort: 80

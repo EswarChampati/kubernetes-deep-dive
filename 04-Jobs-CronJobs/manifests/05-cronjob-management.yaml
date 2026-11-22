@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: managed-cronjob
+spec: 
+  schedule: "* * * * *"
+  concurrencyPolicy: Forbid
+  
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
+
+  startingDeadlineSeconds: 30
+  jobTemplate: 
+    spec: 
+      template:
+        spec: 
+          containers:
+            - name: cron-container
+              image: busybox:1.36
+              command: 
+                - /bin/sh
+                - -c 
+                - | 
+                    echo "Cron Job Started"
+                    sleep 90
+                    echo "Cron Job ended"
+          
+          restartPolicy: Never

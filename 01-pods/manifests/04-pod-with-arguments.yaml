@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: args-pod
+spec: 
+  containers: 
+     - name: argument-container
+       image: busybox
+       command: ["echo"]
+       args: ["Hello", "Kubernetes"]
+  restartPolicy: Never   # BackOff occurs because my container's main process terminates immediately after executing the echo 
+                         # command. Since the default Pod restart policy is Always, Kubernetes keeps restarting the container. 
+                         # After repeated restarts, Kubernetes applies exponential back-off delays. For a one-time task, I can 
+                         # use restartPolicy: Never or a Kubernetes Job.

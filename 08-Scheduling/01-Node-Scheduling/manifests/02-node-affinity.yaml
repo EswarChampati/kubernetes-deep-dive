@@ -1,0 +1,36 @@
+# Create a Deployment named backend-app with 2 replicas.
+
+# Requirements:
+# - Schedule Pods only on nodes with environment=production.
+# - Use requiredDuringSchedulingIgnoredDuringExecution.
+# - Use matchExpressions.
+# - The rule must require the node label value to be production.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: backend-app
+spec:
+  replicas: 2
+  selector: 
+    matchLabels:
+      name: backend-app
+  template:
+    metadata:
+      labels:
+        name: backend-app
+    spec: 
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: environment
+                    operator: In
+                    values:
+                      - production
+      containers:
+        - name: nginx
+          image: nginx:1.27
+          ports: 
+            - containerPort: 80

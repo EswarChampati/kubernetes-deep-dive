@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:    
+  name: pod-with-labels    
+  labels:    
+    environment: Testing
+  annotations:
+    description: "This pod has labels and annotations"
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      ports: 
+        - containerPort: 80

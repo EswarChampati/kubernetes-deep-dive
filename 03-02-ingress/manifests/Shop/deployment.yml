@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: shop-deployment
+spec:
+  replicas: 2
+  selector: 
+    matchLabels: 
+      app: shop
+  template: 
+    metadata: 
+      labels: 
+        app: shop
+    spec:
+      containers:
+        - name: shop-container
+          image: hashicorp/http-echo:0.2.3
+          args:
+            - "-text=Hello from Shop"
+            - "-listen=:6789"
+          ports:
+            - containerPort: 6789

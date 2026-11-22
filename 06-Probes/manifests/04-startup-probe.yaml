@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: startup-demo
+spec:
+  replicas: 2
+  selector: 
+    matchLabels: 
+      app: startup-demo
+  template: 
+    metadata: 
+      labels: 
+        app: startup-demo
+    spec: 
+      containers: 
+        - name: nginx
+          image: nginx:1.27
+          ports: 
+            - containerPort: 80
+          startupProbe: 
+            httpGet: 
+              path: /inv    # check the logs of the container, kubectl get pods check the restarts 
+              port: 80
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 30

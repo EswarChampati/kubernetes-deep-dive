@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: deployment-rolling-update
+spec:
+  replicas: 3
+  selector: 
+    matchLabels:
+      app: rolling-update
+  template: 
+    metadata:
+      labels: 
+        app: rolling-update
+    spec:
+      containers:
+        - name: rolling-update-nginx
+          image: nginx:1.28
+          ports:
+          - containerPort: 80

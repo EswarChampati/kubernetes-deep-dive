@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: basic-daemonset
+spec:
+  selector:
+    matchLabels:
+      app: basic-daemonset
+  template:
+    metadata:
+      labels:
+        app: basic-daemonset
+    spec:
+      containers:
+        - name: basic-daemonset-nginx
+          image: nginx:1.27
+          ports:
+          - containerPort: 80

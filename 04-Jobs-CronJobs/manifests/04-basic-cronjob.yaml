@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata: 
+  name: scheduled-job
+spec: 
+  schedule: "*/2 * * * *"
+  jobTemplate: 
+    spec: 
+      template: 
+        spec: 
+          containers: 
+            - name: scheduled-container
+              image: busybox:1.36
+              command: 
+                - /bin/sh
+                - -c 
+                - |
+                    echo "CronJob Started"
+                    date
+          restartPolicy: Never
