@@ -1,0 +1,34 @@
+# Create a Pod that:
+#   - Mounts the node's /etc directory.
+#   - Mounts it inside the container at /host-etc.
+#   - Uses readOnly: true.
+#   - Allows the container to read files but not modify them through this mount.
+
+# Important: This example is for learning only. Avoid exposing sensitive host directories in real applications. A read-only mount reduces write access but does not make exposing host files harmless.
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-readonly
+spec: 
+  nodeSelector: 
+    hostpath-lab: enabled
+  containers:
+    - name: app
+      image: busybox:1.37
+      command:
+        - sh
+        - -c
+        - ls -la /host-etc; sleep 3600
+
+      volumeMounts: 
+        - name: host-etc
+          mountPath: /host-etc
+          readOnly: true
+  
+  volumes: 
+    - name: host-etc
+      hostPath:
+        path: /etc 
+        type: Directory

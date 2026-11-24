@@ -1,0 +1,17 @@
+# Create the pod and exec into it and write the data and dispaly it then delete it and recreate it and check the content
+# kubectl apply -f pod-without-volume.yaml
+# kubectl exec without-volume -- sh -c "echo Hello Kubernetes > /data.txt"
+# kubectl exec without-volume -- cat /data.txt
+# kubectl delete pod without-volume
+# kubectl apply -f pod-without-volume.yaml
+# kubectl exec without-volume -- cat /data.txt
+
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: pod-without-volume
+spec: 
+  containers:
+    - name: app
+      image: busybox
+      command: ["/bin/sh", "-c", "sleep 3000"]

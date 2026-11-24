@@ -1,0 +1,32 @@
+# reate a Pod that:
+#   - Mounts /var/local/hostpath-lab.
+#   - Writes the current date to history.txt.
+#   - Delete the Pod.
+#   - Recreate the Pod on the same node.
+#   - Verify whether the previous file contents remain.
+
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: hostpath-persistence
+spec: 
+  nodeSelector:
+    hostpath-lab: enabled
+
+  containers:
+    - name: app
+      image: busybox
+      command: 
+        - sh
+        - -c
+        - echo "created at $(date)" >> /node-data/history.txt; sleep 3600
+      volumeMounts: 
+        - name: node-data
+          mountPath: /node-data
+
+
+  volumes: 
+    - name: node-data
+      hostPath:
+        path: /var/local/hostpath-lab
+        type: DirectoryOrCreate

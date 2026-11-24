@@ -1,0 +1,33 @@
+# Create a Pod named hostpath-directory with:
+#   - BusyBox container.
+#   - Host directory /var/local/hostpath-lab.
+#   - Use DirectoryOrCreate.
+#   - Mount the directory inside the container at /node-data.
+#   - Create a file called demo.txt.
+
+# we will create the labelto check that file iscreated on that docker node via exec into thaty worker node
+
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: hostpath-directory
+spec:
+  nodeSelector: 
+    hostpath-lab: enabled
+
+  containers: 
+    - name: app
+      image: busybox:1.37
+      command: 
+        - sh
+        - -c
+        - echo  "written by Pod" >> /node-data/demo.txt; sleep 3600
+      volumeMounts:
+        - name: node-data
+          mountPath: /node-data
+
+  volumes: 
+    - name: node-data
+      hostPath:
+        path: /var/local/hostpath-lab
+        type: DirectoryOrCreate

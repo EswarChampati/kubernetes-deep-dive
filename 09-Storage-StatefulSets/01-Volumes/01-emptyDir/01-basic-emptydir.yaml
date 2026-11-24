@@ -1,0 +1,26 @@
+# Create a Pod named emptydir-basic with:
+# - BusyBox container.
+# - Create a volume using emptyDir.
+# - Mount it inside the container at /scratch.
+# - Write the current date into /scratch/time.txt.
+# - Keep the container running.
+
+# Challenge: Delete and recreate the Pod. Does the old file remain?
+# Expected: No. A newly created Pod gets a new emptyDir volume.
+
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: emptydir-basic
+spec: 
+  containers: 
+    - name: writer
+      image: busybox
+      command: ["/bin/sh", "-c", "date > /scratch/date.txt && sleep 3600"]
+      volumeMounts:
+        - name: scratch
+          mountPath: "/scratch"
+
+  volumes: 
+    - name: scratch
+      emptyDir: {}
